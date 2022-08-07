@@ -1,0 +1,20 @@
+{
+  "name": "web-jammers-ascii",
+  "version": "1.0.0",
+  "description": "acii jam?? :Y",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lils-code/web-jammers-ascii.git"
+  },
+  "author": "lil",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lils-code/web-jammers-ascii/issues"
+  },
+  "homepage": "https://github.com/lils-code/web-jammers-ascii#readme",
+  "dependencies": {}
+}

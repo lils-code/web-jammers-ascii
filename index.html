@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body, html {
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            width: 100%;
+            background-color: black;
+            font-size: 22px;
+        }
+
+        main {
+            width: 50%;
+            height: 100%;
+            position: absolute;
+            font-family: 'Courier New', Courier, monospace;
+            color: white;
+            background-color: black;
+            margin-top: 5%;
+        }
+
+        #in {
+            height: 1.17rem;
+            width: 100%;
+            position: absolute;
+        }
+
+        #dir {
+            display: inline-block;
+            width: min-content;
+            margin: 0;
+            padding: 0;
+            padding-right: 5px;
+        }
+
+        input {
+            border: none;
+            padding: 0;
+            font: inherit;
+            color: inherit;
+            margin: 0;
+            caret-color: transparent;
+            background-color: black;
+        }
+
+        textarea:focus, input:focus{
+            outline: none;
+        }
+
+        #cursor {
+            height: 100%;
+            width: 13.2px;
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            z-index: 1;
+            background-color: white;
+            left: 0;
+            top: 0;
+            color: black;
+        }
+
+        #cli {
+            height: 80%;
+            width: 100%;
+            bottom: 0;
+            background-color: red;
+            position: absolute;
+        }
+
+        #warn {
+            font-size: 10px;
+            position: absolute;
+            bottom: 3%;
+            right: 3%;
+            color: white;
+            width: 10%;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        var dir, input, cursor;
+
+        window.addEventListener("load", (e) => {
+            dir = document.getElementById("dir");
+            input = document.getElementById("input");
+            cursor = document.getElementById("cursor")
+
+            input.addEventListener("blur", (e) => {
+                setTimeout(() => {
+                    input.focus();
+                }, 1);
+            }, false);
+
+            input.addEventListener("input", _on_input, false);
+            input.addEventListener("selectionchange", _on_input, false);
+
+            input.value = "";
+
+            set_dir("lil@web:~/$");
+
+            cursor.style.left = dir.clientWidth + "px";
+            cursor.innerText = input.value.substring(0, 1);
+
+            blink();
+            setInterval(blink, 700);
+        }, false);
+
+        function blink() {
+            cursor.style.opacity = (cursor.style.opacity == 0) ? 1 : 0;
+        }
+
+        function _on_input(e) {
+            const fontwidth = 13.2;
+            const start = e.target.selectionStart;
+
+            cursor.style.left = (dir.clientWidth + (start * fontwidth)) + "px";
+            var hover = e.target.value.substring(start, start + 1)
+            cursor.innerText = hover;
+        }
+
+        function set_dir(str) {
+            dir.innerText = str;
+            input.style.width = "calc(100% - " + (Math.ceil(dir.clientWidth) + 1) + "px)";
+        }
+    </script>
+    <main>
+        <div id="in">
+            <div id="dir"></div><input id="input" type="text" autofocus></input>
+            <div id="cursor"></div>
+        </div>
+        <div id="cli"></div>
+    </main>
+    <div id="warn">(please don't press tab, it kind of breaks things, please thank youu (i'm sorry qwq))</div>
+</body>
+</html>
