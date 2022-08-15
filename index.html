@@ -50,6 +50,7 @@
             margin: 0;
             caret-color: transparent;
             background-color: black;
+            pointer-events: none;
         }
 
         textarea:focus, input:focus{
@@ -89,7 +90,9 @@
 </head>
 <body>
     <script>
-        var dir, input, cursor;
+        let dir, input, cursor;
+        let cmdlist = [""];
+        let cmdpos = 0;
 
         window.addEventListener("load", (e) => {
             dir = document.getElementById("dir");
@@ -102,8 +105,31 @@
                 }, 1);
             }, false);
 
-            input.addEventListener("input", _on_input, false);
             input.addEventListener("selectionchange", _on_input, false);
+
+            input.addEventListener("keydown", (e) => {
+                switch (e.which || e.keyCode) {
+                    case 13:
+                        _on_submit(e);
+                        break;
+                    case 38:
+                        // up
+                        cmdpos = Math.min(cmdpos + 1, cmdlist.length - 1);
+                        e.target.value = cmdlist[cmdlist.length - 1 - cmdpos];
+                        break;
+                    case 40:
+                        // down
+                        cmdpos = Math.max(cmdpos - 1, 0);
+                        e.target.value = cmdlist[cmdlist.length - 1 - cmdpos];
+                        break;
+                    case 37:
+                        // left
+                        break;
+                    case 39:
+                        // right
+                        break;
+                }
+            },false);
 
             input.value = "";
 
@@ -127,6 +153,15 @@
             cursor.style.left = (dir.clientWidth + (start * fontwidth)) + "px";
             var hover = e.target.value.substring(start, start + 1)
             cursor.innerText = hover;
+
+            cmdlist[cmdlist.length - 1] = e.target.value;
+            console.log(cmdlist);
+        }
+
+        function _on_submit(e) {
+            console.log("here");
+            e.target.value = "";
+            cmdlist[cmdlist.length] = "";
         }
 
         function set_dir(str) {
